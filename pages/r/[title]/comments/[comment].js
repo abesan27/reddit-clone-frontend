@@ -5,11 +5,15 @@ import { Post } from '../../../../components/posts/post';
 const Comment = () => {
   const comment = parseInt(useGetComment());
 
-  const { loading, error, data } = useQuery(COMMENT_QUERY, {
+  const {
+    loading: loadingQuery,
+    error,
+    data,
+  } = useQuery(COMMENT_QUERY, {
     variables: { id: comment },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loadingQuery) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   const post = data.posts[0];
