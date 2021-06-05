@@ -1,15 +1,23 @@
 import { gql, useQuery } from '@apollo/client';
-import { useGetTitle } from '../../utils/useGetTitle';
-import { Post } from '../../components/posts/post';
+import { signIn, useSession } from 'next-auth/client';
+import { useGetTitle } from '../../../utils/useGetTitle';
+import { Post } from '../../../components/posts/post';
+import { CreatePost } from '../../../components/shared/createPost';
 
 const SubredditPage = () => {
   const title = useGetTitle();
 
-  const { loading, error, data } = useQuery(SUBREDDIT_QUERY, {
+  const [session, loading] = useSession();
+
+  const {
+    loading: loadingQuery,
+    error,
+    data,
+  } = useQuery(SUBREDDIT_QUERY, {
     variables: { name: title },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loadingQuery || loading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   if (!data.subreddits[0]) return <div>No such subreddit found.</div>;
@@ -22,8 +30,19 @@ const SubredditPage = () => {
       <div>
         <h1>{subreddit.name}</h1>
         <h3>{subreddit.description}</h3>
-        <p>{subreddit.posts.length}</p>
+        <p>{subreddit.posts.length} posts</p>
       </div>
+      {!session && (
+        <div>
+          <button onClick={() => signIn()}>Sign in</button>
+        </div>
+      )}
+      {session && (
+        <div>
+          <p>Logged in as: {session.user.email}</p>
+          <CreatePost />
+        </div>
+      )}
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
@@ -43,6 +62,7 @@ const SUBREDDIT_QUERY = gql`
         title
         description
         id
+        votes
       }
     }
   }

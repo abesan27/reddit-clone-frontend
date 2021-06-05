@@ -1,25 +1,39 @@
+import { signIn, signOut, useSession } from 'next-auth/client';
 import { gql, useQuery } from '@apollo/client';
 import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
 
 const Index = () => {
-  const { loading, error, data } = useQuery(POSTS_QUERY);
+  const [session, loading] = useSession();
 
-  if (loading) return <div>Loading...</div>;
+  const { loading: loadingQuery, error, data } = useQuery(POSTS_QUERY);
+
+  if (loadingQuery || loading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   const { posts } = data;
 
   return (
-    <div>
-      <Navbar />
-      <div>
-        <h1>Reddit</h1>
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </div>
-    </div>
+    <>
+      {!session && (
+        <div>
+          <button onClick={() => signIn()}>Sign in</button>
+        </div>
+      )}
+      {session && (
+        <div>
+          <Navbar />
+          <button onClick={() => signOut()}>Sign out</button>
+          <p>Logged in as: {session.user.email}</p>
+          <div>
+            <h1>Reddit</h1>
+            {posts.map((post) => (
+              <Post key={post.id} post={post} />
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -29,6 +43,7 @@ const POSTS_QUERY = gql`
       id
       title
       description
+      votes
       user {
         username
       }

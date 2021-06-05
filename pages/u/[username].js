@@ -37,6 +37,7 @@ const USER_QUERY = gql`
         id
         title
         description
+        votes
         subreddit {
           name
         }
