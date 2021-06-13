@@ -17,6 +17,15 @@ export const Post = ({ post }) => {
         <p>{post.user.username}</p>
       )}
       <p>{post.votes} likes</p>
+
+      {post.comments &&
+        post.comments.map((comment) => (
+          <div key={comment.id}>
+            <p>
+              {comment.content} - {comment.user.username}
+            </p>
+          </div>
+        ))}
     </div>
   );
 };
