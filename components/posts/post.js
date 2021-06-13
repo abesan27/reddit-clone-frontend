@@ -1,7 +1,11 @@
+import Link from 'next/link';
+
 export const Post = ({ post }) => {
   return (
     <div>
-      <h3>{post.title}</h3>
+      <Link href={`/r/programming/comments/${post.id}`}>
+        <h3>{post.title}</h3>
+      </Link>
       <p>{post.description}</p>
       {post.user && post.subreddit ? (
         <p>

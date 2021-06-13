@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { signIn, useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
 import { Post } from '../../../components/posts/post';
-import { CreatePost } from '../../../components/shared/createPost';
+import { CreatePost } from '../../../components/posts/createPost';
 
 const SubredditPage = () => {
   const title = useGetTitle();

@@ -17,11 +17,13 @@ export const CreatePost = () => {
           description.value = '';
         }}>
         <input
+          required
           ref={(node) => {
             title = node;
           }}
         />
         <input
+          required
           ref={(node) => {
             description = node;
           }}
