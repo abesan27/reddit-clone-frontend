@@ -47,7 +47,7 @@ const COMMENT_QUERY = gql`
       title
       description
       votes
-      user {
+      account {
         username
       }
       subreddit {
@@ -56,7 +56,7 @@ const COMMENT_QUERY = gql`
       comments {
         id
         content
-        user {
+        account {
           username
         }
       }

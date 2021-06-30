@@ -56,7 +56,7 @@ const SUBREDDIT_QUERY = gql`
       name
       description
       posts {
-        user {
+        account {
           username
         }
         title

@@ -12,15 +12,15 @@ const UserPage = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
-  if (!data.users[0]) return <div>No such user found.</div>;
+  if (!data.accounts[0]) return <div>No such user found.</div>;
 
-  const user = data.users[0];
-  const { posts } = user;
+  const account = data.accounts[0];
+  const { posts } = account;
 
   return (
     <div>
       <div>
-        <h1>{user.username}</h1>
+        <h1>{account.username}</h1>
       </div>
       {posts.map((post) => (
         <Post key={post.id} post={post} />
@@ -30,8 +30,8 @@ const UserPage = () => {
 };
 
 const USER_QUERY = gql`
-  query Users($username: String) {
-    users(where: { username: $username }) {
+  query Accounts($username: String) {
+    accounts(where: { username: $username }) {
       username
       posts {
         id

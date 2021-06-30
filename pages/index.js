@@ -32,7 +32,7 @@ const POSTS_QUERY = gql`
       title
       description
       votes
-      user {
+      account {
         username
       }
       subreddit {

@@ -5,6 +5,8 @@ export const Navbar = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  console.log(session);
+
   return (
     <div>
       <h1>Navbar</h1>

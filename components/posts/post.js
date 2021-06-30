@@ -7,14 +7,14 @@ export const Post = ({ post }) => {
         <h3>{post.title}</h3>
       </Link>
       <p>{post.description}</p>
-      {post.user && post.subreddit ? (
+      {post.account && post.subreddit ? (
         <p>
-          posted by {post.user.username} in r/{post.subreddit.name}
+          posted by {post.account.username} in r/{post.subreddit.name}
         </p>
-      ) : !post.user ? (
+      ) : !post.account ? (
         <p>{post.subreddit.name}</p>
       ) : (
-        <p>{post.user.username}</p>
+        <p>{post.account.username}</p>
       )}
       <p>{post.votes} likes</p>
 
@@ -22,7 +22,7 @@ export const Post = ({ post }) => {
         post.comments.map((comment) => (
           <div key={comment.id}>
             <p>
-              {comment.content} - {comment.user.username}
+              {comment.content} - {comment.account.username}
             </p>
           </div>
         ))}
