@@ -18,7 +18,7 @@ export const Navbar = () => {
       {session && (
         <div>
           <button onClick={() => signOut()}>Sign out</button>
-          <p>Logged in as: {session.user.email}</p>
+          <p>Logged in as: {session.user.name}</p>
         </div>
       )}
     </div>
