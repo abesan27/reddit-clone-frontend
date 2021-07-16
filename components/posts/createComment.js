@@ -27,16 +27,16 @@ export const CreateComment = ({ postId }) => {
 };
 
 const ADD_COMMENT = gql`
-mutation CreateComment($content: String!, $post: ID!) {
-  createComment(
-    input: { data: { content: $content, post: $post, account: 1 } }
-  ) {
-    comment {
-      content
-      account {
-        username
+  mutation CreateComment($content: String!, $post: ID!) {
+    createComment(
+      input: { data: { content: $content, post: $post, user: 1 } }
+    ) {
+      comment {
+        content
+        user {
+          username
+        }
       }
     }
   }
-}
 `;

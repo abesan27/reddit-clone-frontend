@@ -41,15 +41,15 @@ const ADD_POST = gql`
         data: {
           title: $title
           description: $description
-          account: 1
-          subreddit: 3
+          user: 1
+          subreddit: 1
         }
       }
     ) {
       post {
         title
         description
-        account {
+        user {
           id
         }
         subreddit {

@@ -1,23 +1,60 @@
-import { signIn, signOut, useSession } from 'next-auth/client';
+import { signIn, signOut } from 'next-auth/client';
+import Link from 'next/link';
 
-export const Navbar = () => {
-  const [session, loading] = useSession();
+export const Navbar = ({ session }) => {
+  const signInButtonNode = () => {
+    if (session) {
+      return false;
+    }
 
-  if (loading) return <div>Loading...</div>;
+    return (
+      <div>
+        <Link href="/api/auth/signin">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              signIn();
+            }}>
+            Sign In
+          </button>
+        </Link>
+      </div>
+    );
+  };
 
-  console.log(session);
+  const signOutButtonNode = () => {
+    if (!session) {
+      return false;
+    }
+
+    return (
+      <div>
+        <Link href="/api/auth/signout">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              signOut();
+            }}>
+            Sign Out
+          </button>
+        </Link>
+      </div>
+    );
+  };
 
   return (
     <div>
       <h1>Navbar</h1>
       {!session && (
         <div>
-          <button onClick={() => signIn()}>Sign in</button>
+          {signOutButtonNode()}
+          {signInButtonNode()}
         </div>
       )}
       {session && (
         <div>
-          <button onClick={() => signOut()}>Sign out</button>
+          {signOutButtonNode()}
+          {signInButtonNode()}
           <p>Logged in as: {session.user.name}</p>
         </div>
       )}
