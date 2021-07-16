@@ -32,19 +32,14 @@ const SubredditPage = () => {
         <h3>{subreddit.description}</h3>
         <p>{subreddit.posts.length} posts</p>
       </div>
-      {!session && (
-        <div>
-          <button onClick={() => signIn()}>Sign in</button>
-        </div>
-      )}
       {session && (
         <div>
-          <p>Logged in as: {session.user.email}</p>
+          <p>Logged in as: {session.user.name}</p>
           <CreatePost />
         </div>
       )}
       {posts.map((post) => (
-        <Post key={post.id} post={post} />
+        <Post key={post.id} post={post} subreddit={title} />
       ))}
     </div>
   );
@@ -56,7 +51,7 @@ const SUBREDDIT_QUERY = gql`
       name
       description
       posts {
-        account {
+        user {
           username
         }
         title
