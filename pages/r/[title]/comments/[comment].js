@@ -33,7 +33,7 @@ const Comment = () => {
       )}
       {session && (
         <div>
-          <CreateComment postId={post.id} />
+          <CreateComment postId={post.id} userId={session.id} />
         </div>
       )}
     </div>

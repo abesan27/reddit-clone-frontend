@@ -7,6 +7,10 @@ const options = {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
+    Providers.Reddit({
+      clientId: process.env.REDDIT_CLIENT_ID,
+      clientSecret: process.env.REDDIT_CLIENT_SECRET,
+    }),
   ],
   database: process.env.NEXT_PUBLIC_DATABASE_URL,
   session: {
