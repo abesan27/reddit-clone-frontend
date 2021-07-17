@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const CreateComment = ({ postId }) => {
+export const CreateComment = ({ postId, userId }) => {
   let content;
   const [addComment] = useMutation(ADD_COMMENT);
 
@@ -10,7 +10,7 @@ export const CreateComment = ({ postId }) => {
         onSubmit={(e) => {
           e.preventDefault();
           addComment({
-            variables: { content: content.value, post: postId },
+            variables: { content: content.value, post: postId, user: userId },
           });
           content.value = '';
         }}>
@@ -27,9 +27,9 @@ export const CreateComment = ({ postId }) => {
 };
 
 const ADD_COMMENT = gql`
-  mutation CreateComment($content: String!, $post: ID!) {
+  mutation CreateComment($content: String!, $post: ID!, $user: ID!) {
     createComment(
-      input: { data: { content: $content, post: $post, user: 1 } }
+      input: { data: { content: $content, post: $post, user: $user } }
     ) {
       comment {
         content

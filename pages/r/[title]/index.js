@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { signIn, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
 import { Post } from '../../../components/posts/post';
 import { CreatePost } from '../../../components/posts/createPost';
@@ -10,19 +10,19 @@ const SubredditPage = () => {
   const [session, loading] = useSession();
 
   const {
-    loading: loadingQuery,
-    error,
-    data,
+    loading: subredditLoading,
+    error: subredditError,
+    data: subredditData,
   } = useQuery(SUBREDDIT_QUERY, {
     variables: { name: title },
   });
 
-  if (loadingQuery || loading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
+  if (subredditLoading || loading) return <div>Loading...</div>;
+  if (subredditError) return <div>Error</div>;
 
-  if (!data.subreddits[0]) return <div>No such subreddit found.</div>;
+  if (!subredditData.subreddits[0]) return <div>No such subreddit found.</div>;
 
-  const subreddit = data.subreddits[0];
+  const subreddit = subredditData.subreddits[0];
   const { posts } = subreddit;
 
   return (
@@ -35,7 +35,7 @@ const SubredditPage = () => {
       {session && (
         <div>
           <p>Logged in as: {session.user.name}</p>
-          <CreatePost />
+          <CreatePost userId={session.id} />
         </div>
       )}
       {posts.map((post) => (
