@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Comment } from './comment';
 
 export const Post = ({ post, subreddit }) => {
   let subredditName;
@@ -12,7 +13,7 @@ export const Post = ({ post, subreddit }) => {
   return (
     <div>
       <Link href={`/r/${subredditName}/comments/${post.id}`}>
-        <h3>{post.title}</h3>
+        <a>{post.title}</a>
       </Link>
       <p>{post.description}</p>
       {post.user && post.subreddit ? (
@@ -25,15 +26,8 @@ export const Post = ({ post, subreddit }) => {
         <p>{post.user.username}</p>
       )}
       <p>{post.votes} likes</p>
-
       {post.comments &&
-        post.comments.map((comment) => (
-          <div key={comment.id}>
-            <p>
-              {comment.content} - {comment.user.username}
-            </p>
-          </div>
-        ))}
+        post.comments.map((comment) => <Comment comment={comment} />)}
     </div>
   );
 };
