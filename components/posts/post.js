@@ -15,19 +15,30 @@ export const Post = ({ post, subreddit }) => {
       <Link href={`/r/${subredditName}/comments/${post.id}`}>
         <a>{post.title}</a>
       </Link>
-      <p>{post.description}</p>
-      {post.user && post.subreddit ? (
-        <p>
-          posted by {post.user.username} in r/{post.subreddit.name}
-        </p>
-      ) : !post.user ? (
-        <p>{post.subreddit.name}</p>
-      ) : (
-        <p>{post.user.username}</p>
-      )}
-      <p>{post.votes} likes</p>
-      {post.comments &&
-        post.comments.map((comment) => <Comment comment={comment} />)}
+      <div>
+        <p>{post.description}</p>
+        {post.user && post.subreddit ? (
+          <p>
+            posted by {post.user.username} in{' '}
+            <Link href={`/r/${post.subreddit.name}`}>
+              <a>r/{post.subreddit.name}</a>
+            </Link>
+          </p>
+        ) : !post.user ? (
+          <p>{post.subreddit.name}</p>
+        ) : (
+          <p>{post.user.username}</p>
+        )}
+        <p>{post.votes} likes</p>
+      </div>
+      <div>
+        <button>upvote</button>
+        <button>downvote</button>
+      </div>
+      <div>
+        {post.comments &&
+          post.comments.map((comment) => <Comment comment={comment} />)}
+      </div>
     </div>
   );
 };

@@ -35,7 +35,7 @@ const SubredditPage = () => {
       {session && (
         <div>
           <p>Logged in as: {session.user.name}</p>
-          <CreatePost userId={session.id} />
+          <CreatePost userId={session.id} subredditId={subreddit.id} />
         </div>
       )}
       {posts.map((post) => (
@@ -46,8 +46,9 @@ const SubredditPage = () => {
 };
 
 const SUBREDDIT_QUERY = gql`
-  query Subreddits($name: String) {
+  query Subreddits($name: String!) {
     subreddits(where: { name: $name }) {
+      id
       name
       description
       posts {

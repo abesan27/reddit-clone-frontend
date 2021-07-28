@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const CreatePost = ({ userId }) => {
+export const CreatePost = ({ userId, subredditId }) => {
   let title;
   let description;
   const [addPost] = useMutation(ADD_POST);
@@ -15,6 +15,7 @@ export const CreatePost = ({ userId }) => {
               title: title.value,
               description: description.value,
               user: userId,
+              subreddit: subredditId,
             },
           });
           title.value = '';
@@ -39,14 +40,19 @@ export const CreatePost = ({ userId }) => {
 };
 
 const ADD_POST = gql`
-  mutation CreatePost($title: String!, $description: String!, $user: ID!) {
+  mutation CreatePost(
+    $title: String!
+    $description: String!
+    $user: ID!
+    $subreddit: ID!
+  ) {
     createPost(
       input: {
         data: {
           title: $title
           description: $description
           user: $user
-          subreddit: 1
+          subreddit: $subreddit
         }
       }
     ) {
