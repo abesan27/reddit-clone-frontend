@@ -19,7 +19,11 @@ export const Post = ({ post, subreddit }) => {
         <p>{post.description}</p>
         {post.user && post.subreddit ? (
           <p>
-            posted by {post.user.username} in{' '}
+            posted by{' '}
+            <Link href={`/u/${post.user.username}`}>
+              <a>u/{post.user.username}</a>
+            </Link>{' '}
+            in{' '}
             <Link href={`/r/${subredditName}`}>
               <a>r/{subredditName}</a>
             </Link>

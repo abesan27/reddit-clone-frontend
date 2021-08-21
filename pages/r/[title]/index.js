@@ -28,6 +28,11 @@ const SubredditPage = () => {
   return (
     <div>
       <div>
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}${subreddit.icon.url}`}
+          height={60}
+          widht={60}
+        />
         <h1>{subreddit.name}</h1>
         <h3>{subreddit.description}</h3>
         <p>{subreddit.posts.length} posts</p>
@@ -59,6 +64,9 @@ const SUBREDDIT_QUERY = gql`
         description
         id
         votes
+      }
+      icon {
+        url
       }
     }
   }
