@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
 import { Post } from '../../../components/posts/post';
 import { CreatePost } from '../../../components/posts/createPost';
+import { JoinSubreddit } from '../../../components/shared/joinSubreddit';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -35,10 +36,14 @@ const SubredditPage = () => {
         />
         <h1>{subreddit.name}</h1>
         <h3>{subreddit.description}</h3>
-        <p>{subreddit.posts.length} posts</p>
+        <div>
+          <p>{subreddit.posts.length} posts</p>
+          <p>{subreddit.users.length} users</p>
+        </div>
       </div>
       {session && (
         <div>
+          <JoinSubreddit />
           <p>Logged in as: {session.user.name}</p>
           <CreatePost userId={session.id} subredditId={subreddit.id} />
         </div>
@@ -56,6 +61,9 @@ const SUBREDDIT_QUERY = gql`
       id
       name
       description
+      users {
+        username
+      }
       posts {
         user {
           username
