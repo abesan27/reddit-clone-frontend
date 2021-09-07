@@ -10,6 +10,8 @@ export const Post = ({ post, subreddit }) => {
       : (subredditName = post.subreddit.name);
   }
 
+  console.log(post.likes.length);
+
   return (
     <div>
       <Link href={`/r/${subredditName}/comments/${post.id}`}>
@@ -33,7 +35,7 @@ export const Post = ({ post, subreddit }) => {
         ) : (
           <p>{post.user.username}</p>
         )}
-        <p>{post.votes} likes</p>
+        <p>{post.likes.length} likes</p>
       </div>
       <div>
         <button>upvote</button>

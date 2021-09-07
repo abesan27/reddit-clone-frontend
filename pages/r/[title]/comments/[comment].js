@@ -46,9 +46,13 @@ const COMMENT_QUERY = gql`
       id
       title
       description
-      votes
       user {
         username
+      }
+      likes {
+        users {
+          username
+        }
       }
       subreddit {
         name

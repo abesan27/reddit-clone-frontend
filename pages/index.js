@@ -16,7 +16,7 @@ const Index = ({ session }) => {
     <>
       <div>
         <Navbar session={session} />
-        <CreateSubreddit />
+        {/* <CreateSubreddit /> */}
         <div>
           <h1>Reddit</h1>
           {posts.map((post) => (
@@ -34,12 +34,16 @@ const POSTS_QUERY = gql`
       id
       title
       description
-      votes
       user {
         username
       }
       subreddit {
         name
+      }
+      likes {
+        users {
+          username
+        }
       }
     }
   }

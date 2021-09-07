@@ -71,7 +71,11 @@ const SUBREDDIT_QUERY = gql`
         title
         description
         id
-        votes
+        likes {
+          users {
+            username
+          }
+        }
       }
       icon {
         url
