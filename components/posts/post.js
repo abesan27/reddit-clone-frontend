@@ -43,6 +43,7 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
       </div>
       {session && (
         <LikePost
+          post={post}
           userId={post.user.id}
           postId={post.id}
           hasLikedPost={hasLikedPost}

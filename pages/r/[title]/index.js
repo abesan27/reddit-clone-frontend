@@ -82,6 +82,7 @@ const SUBREDDIT_QUERY = gql`
         description
         id
         likes {
+          id
           users {
             username
           }

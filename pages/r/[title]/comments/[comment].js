@@ -62,6 +62,7 @@ const COMMENT_QUERY = gql`
         id
       }
       likes {
+        id
         users {
           username
         }

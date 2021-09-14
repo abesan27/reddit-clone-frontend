@@ -52,6 +52,7 @@ const POSTS_QUERY = gql`
         name
       }
       likes {
+        id
         users {
           username
         }
