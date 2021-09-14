@@ -1,13 +1,15 @@
 import { gql, useQuery } from '@apollo/client';
-import { getSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
 import { CreateSubreddit } from '../components/posts/createSubreddit';
 
-const Index = ({ session }) => {
+const Index = ({}) => {
+  const [session, loading] = useSession();
+
   const { loading: loadingQuery, error, data } = useQuery(POSTS_QUERY);
 
-  if (loadingQuery) return <div>Loading...</div>;
+  if (loadingQuery || loading) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   const { posts } = data;
@@ -36,6 +38,7 @@ const POSTS_QUERY = gql`
       description
       user {
         username
+        id
       }
       subreddit {
         name
@@ -49,13 +52,13 @@ const POSTS_QUERY = gql`
   }
 `;
 
-export const getServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
-  return {
-    props: {
-      session,
-    },
-  };
-};
+// export const getServerSideProps = async ({ req }) => {
+//   const session = await getSession({ req });
+//   return {
+//     props: {
+//       session,
+//     },
+//   };
+// };
 
 export default Index;

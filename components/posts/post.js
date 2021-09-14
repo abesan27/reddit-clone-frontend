@@ -1,7 +1,13 @@
 import Link from 'next/link';
 import { Comment } from './comment';
+import { useSession } from 'next-auth/client';
+import { LikePost } from './likePost';
 
 export const Post = ({ post, subreddit }) => {
+  const [session, loading] = useSession();
+
+  if (loading) return <div>Loading...</div>;
+
   let subredditName;
 
   {
@@ -9,8 +15,6 @@ export const Post = ({ post, subreddit }) => {
       ? (subredditName = subreddit)
       : (subredditName = post.subreddit.name);
   }
-
-  console.log(post.likes.length);
 
   return (
     <div>
@@ -37,10 +41,7 @@ export const Post = ({ post, subreddit }) => {
         )}
         <p>{post.likes.length} likes</p>
       </div>
-      <div>
-        <button>upvote</button>
-        <button>downvote</button>
-      </div>
+      {session && <LikePost userId={post.user.id} postId={post.id} />}
       <div>
         {post.comments &&
           post.comments.map((comment) => <Comment comment={comment} />)}

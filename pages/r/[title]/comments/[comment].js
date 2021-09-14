@@ -9,6 +9,8 @@ const Comment = () => {
 
   const [session, loading] = useSession();
 
+  console.log(session);
+
   const {
     loading: loadingQuery,
     error,
@@ -48,6 +50,7 @@ const COMMENT_QUERY = gql`
       description
       user {
         username
+        id
       }
       likes {
         users {
