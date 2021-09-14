@@ -22,7 +22,15 @@ const Index = ({}) => {
         <div>
           <h1>Reddit</h1>
           {posts.map((post) => (
-            <Post key={post.id} post={post} />
+            <Post
+              key={post.id}
+              post={post}
+              hasLikedPost={
+                post.likes[0] &&
+                session &&
+                session.user.name == post.likes[0].users.username
+              }
+            />
           ))}
         </div>
       </div>

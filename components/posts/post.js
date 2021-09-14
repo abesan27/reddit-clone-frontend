@@ -3,7 +3,7 @@ import { Comment } from './comment';
 import { useSession } from 'next-auth/client';
 import { LikePost } from './likePost';
 
-export const Post = ({ post, subreddit }) => {
+export const Post = ({ post, subreddit, hasLikedPost }) => {
   const [session, loading] = useSession();
 
   if (loading) return <div>Loading...</div>;
@@ -41,7 +41,13 @@ export const Post = ({ post, subreddit }) => {
         )}
         <p>{post.likes.length} likes</p>
       </div>
-      {session && <LikePost userId={post.user.id} postId={post.id} />}
+      {session && (
+        <LikePost
+          userId={post.user.id}
+          postId={post.id}
+          hasLikedPost={hasLikedPost}
+        />
+      )}
       <div>
         {post.comments &&
           post.comments.map((comment) => <Comment comment={comment} />)}

@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const LikePost = ({ userId, postId }) => {
+export const LikePost = ({ userId, postId, hasLikedPost }) => {
   const [addLike] = useMutation(ADD_LIKE);
 
   return (
@@ -16,7 +16,9 @@ export const LikePost = ({ userId, postId }) => {
             },
           });
         }}>
-        <button type="submit">like</button>
+        <button disabled={hasLikedPost} type="submit">
+          like
+        </button>
       </form>
     </div>
   );

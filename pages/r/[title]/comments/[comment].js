@@ -9,8 +9,6 @@ const Comment = () => {
 
   const [session, loading] = useSession();
 
-  console.log(session);
-
   const {
     loading: loadingQuery,
     error,
@@ -25,9 +23,20 @@ const Comment = () => {
   const post = data.posts[0];
   if (!post) return <div>No such post found.</div>;
 
+  const hasLikedPost =
+    post.likes[0] &&
+    session &&
+    session.user.name == post.likes[0].users.username;
+
+  // console.log(
+  //   post.likes[0] &&
+  //     session &&
+  //     session.user.name == post.likes[0].users.username
+  // );
+
   return (
     <div>
-      <Post key={post.id} post={post} />
+      <Post key={post.id} post={post} hasLikedPost={hasLikedPost} />
       {!session && (
         <div>
           <button onClick={() => signIn()}>Sign in</button>
