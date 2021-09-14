@@ -33,6 +33,7 @@ const USER_QUERY = gql`
   query Accounts($username: String) {
     users(where: { username: $username }) {
       username
+      id
       posts {
         id
         title

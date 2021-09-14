@@ -49,7 +49,16 @@ const SubredditPage = () => {
         </div>
       )}
       {posts.map((post) => (
-        <Post key={post.id} post={post} subreddit={title} />
+        <Post
+          key={post.id}
+          post={post}
+          subreddit={title}
+          hasLikedPost={
+            post.likes[0] &&
+            session &&
+            session.user.name == post.likes[0].users.username
+          }
+        />
       ))}
     </div>
   );
@@ -67,11 +76,17 @@ const SUBREDDIT_QUERY = gql`
       posts {
         user {
           username
+          id
         }
         title
         description
         id
-        votes
+        likes {
+          id
+          users {
+            username
+          }
+        }
       }
       icon {
         url
