@@ -4,9 +4,11 @@ import { useGetTitle } from '../../../utils/useGetTitle';
 import { Post } from '../../../components/posts/post';
 import { CreatePost } from '../../../components/posts/createPost';
 import { JoinSubreddit } from '../../../components/shared/joinSubreddit';
+import { useRouter } from 'next/router';
 
 const SubredditPage = () => {
   const title = useGetTitle();
+  const router = useRouter();
 
   const [session, loading] = useSession();
 
@@ -45,7 +47,7 @@ const SubredditPage = () => {
         <div>
           <JoinSubreddit />
           <p>Logged in as: {session.user.name}</p>
-          <CreatePost userId={session.id} subredditId={subreddit.id} />
+          <button onClick={() => router.push('/submit')}>create post</button>
         </div>
       )}
       {posts.map((post) => (

@@ -39,9 +39,11 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
         ) : (
           <p>{post.user.username}</p>
         )}
-        <p>{post.likes.length} likes</p>
+        {post.likes && <p>{post.likes.length} likes</p>}
       </div>
-      {session && <LikePost post={post} hasLikedPost={hasLikedPost} />}
+      {session && post.likes && (
+        <LikePost post={post} hasLikedPost={hasLikedPost} />
+      )}
       <div>
         {post.comments &&
           post.comments.map((comment) => <Comment comment={comment} />)}
