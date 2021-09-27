@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const LikePost = ({ post, hasLikedPost }) => {
+export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
   const [addLike] = useMutation(ADD_LIKE);
   const [deleteLike] = useMutation(DELETE_LIKE);
 
@@ -11,13 +11,13 @@ export const LikePost = ({ post, hasLikedPost }) => {
           e.preventDefault();
           addLike({
             variables: {
-              liked_id: `${post.id}${post.user.id}`,
-              users: post.user.id,
+              liked_id: `${post.id}${currentUserId}`,
+              users: currentUserId,
               post: post.id,
             },
           });
         }}>
-        <button disabled={hasLikedPost} type="submit">
+        <button disabled={liked} type="submit">
           upvote
         </button>
       </form>
@@ -26,11 +26,11 @@ export const LikePost = ({ post, hasLikedPost }) => {
           e.preventDefault();
           deleteLike({
             variables: {
-              id: post.likes[0].id,
+              id: likedPostId,
             },
           });
         }}>
-        <button disabled={!hasLikedPost} type="submit">
+        <button disabled={!liked} type="submit">
           downvote
         </button>
       </form>

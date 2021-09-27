@@ -14,6 +14,20 @@ const Index = ({}) => {
 
   const { posts } = data;
 
+  const hasUserLikedPost = ({ post }) => {
+    let liked = false;
+    let id;
+
+    for (let i = 0; i < post.likes.length; i++) {
+      if (session && session.user.name == post.likes[i].users.username) {
+        liked = true;
+        id = post.likes[i].id;
+      }
+    }
+
+    return [liked, id];
+  };
+
   return (
     <>
       <div>
@@ -25,11 +39,7 @@ const Index = ({}) => {
             <Post
               key={post.id}
               post={post}
-              hasLikedPost={
-                post.likes[0] &&
-                session &&
-                session.user.name == post.likes[0].users.username
-              }
+              hasLikedPost={hasUserLikedPost({ post })}
             />
           ))}
         </div>

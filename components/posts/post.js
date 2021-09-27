@@ -16,6 +16,8 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
       : (subredditName = post.subreddit.name);
   }
 
+  const [liked, id] = hasLikedPost;
+
   return (
     <div>
       <Link href={`/r/${subredditName}/comments/${post.id}`}>
@@ -42,7 +44,12 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
         {post.likes && <p>{post.likes.length} likes</p>}
       </div>
       {session && post.likes && (
-        <LikePost post={post} hasLikedPost={hasLikedPost} />
+        <LikePost
+          post={post}
+          liked={liked}
+          likedPostId={id}
+          currentUserId={session.id}
+        />
       )}
       <div>
         {post.comments &&
