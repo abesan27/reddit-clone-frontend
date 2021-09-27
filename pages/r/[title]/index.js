@@ -58,7 +58,15 @@ const SubredditPage = () => {
       </div>
       {session && (
         <div>
-          {isAdmin ? null : isMember ? <LeaveSubreddit /> : <JoinSubreddit />}
+          {isAdmin ? null : isMember ? (
+            <LeaveSubreddit />
+          ) : (
+            <JoinSubreddit
+              subredditId={subreddit.id}
+              users={subreddit.users}
+              currentUserId={session.id}
+            />
+          )}
           <p>Logged in as: {session.user.name}</p>
           <button onClick={() => router.push('/submit')}>create post</button>
         </div>
@@ -89,6 +97,7 @@ const SUBREDDIT_QUERY = gql`
         username
       }
       users {
+        id
         username
       }
       posts {
