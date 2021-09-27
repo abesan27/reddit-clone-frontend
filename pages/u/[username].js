@@ -27,6 +27,19 @@ const UserPage = () => {
 
   return (
     <div>
+      {user.pfp ? (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}${user.pfp.url}`}
+          height={80}
+          widht={80}
+        />
+      ) : (
+        <img
+          src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/snoo_783cb16771.png`}
+          height={80}
+          widht={80}
+        />
+      )}
       <div>
         <h1>{user.username}</h1>
       </div>
@@ -59,6 +72,9 @@ const USER_QUERY = gql`
         subreddit {
           name
         }
+      }
+      pfp {
+        url
       }
     }
   }
