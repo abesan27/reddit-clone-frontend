@@ -59,7 +59,11 @@ const SubredditPage = () => {
       {session && (
         <div>
           {isAdmin ? null : isMember ? (
-            <LeaveSubreddit />
+            <LeaveSubreddit
+              subredditId={subreddit.id}
+              users={subreddit.users}
+              currentUserId={session.id}
+            />
           ) : (
             <JoinSubreddit
               subredditId={subreddit.id}
