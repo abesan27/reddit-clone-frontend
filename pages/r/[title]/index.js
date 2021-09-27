@@ -1,14 +1,17 @@
 import { gql, useQuery } from '@apollo/client';
 import { useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
+import { useCheckUsername } from '../../../utils/useCheckUsername';
 import { Post } from '../../../components/posts/post';
-import { CreatePost } from '../../../components/posts/createPost';
 import { JoinSubreddit } from '../../../components/shared/joinSubreddit';
+import { LeaveSubreddit } from '../../../components/shared/leaveSubreddit';
 import { useRouter } from 'next/router';
 
 const SubredditPage = () => {
   const title = useGetTitle();
   const router = useRouter();
+  let isMember,
+    isAdmin = false;
 
   const [session, loading] = useSession();
 
@@ -26,7 +29,17 @@ const SubredditPage = () => {
   if (!subredditData.subreddits[0]) return <div>No such subreddit found.</div>;
 
   const subreddit = subredditData.subreddits[0];
-  const { posts } = subreddit;
+  const { posts, users, admins } = subreddit;
+
+  if (session && users && admins) {
+    const username = session.user.name;
+
+    const checkIfMember = useCheckUsername({ list: users, username });
+    const checkIfAdmin = useCheckUsername({ list: admins, username });
+
+    isMember = checkIfMember;
+    isAdmin = checkIfAdmin;
+  }
 
   return (
     <div>
@@ -45,7 +58,19 @@ const SubredditPage = () => {
       </div>
       {session && (
         <div>
-          <JoinSubreddit />
+          {isAdmin ? null : isMember ? (
+            <LeaveSubreddit
+              subredditId={subreddit.id}
+              users={subreddit.users}
+              currentUserId={session.id}
+            />
+          ) : (
+            <JoinSubreddit
+              subredditId={subreddit.id}
+              users={subreddit.users}
+              currentUserId={session.id}
+            />
+          )}
           <p>Logged in as: {session.user.name}</p>
           <button onClick={() => router.push('/submit')}>create post</button>
         </div>
@@ -72,7 +97,11 @@ const SUBREDDIT_QUERY = gql`
       id
       name
       description
+      admins {
+        username
+      }
       users {
+        id
         username
       }
       posts {

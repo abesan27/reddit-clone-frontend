@@ -1,13 +1,11 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const JoinSubreddit = ({ subredditId, users, currentUserId }) => {
+export const LeaveSubreddit = ({ subredditId, users, currentUserId }) => {
   let membersIdList = [];
 
   users.map((user) => {
-    membersIdList.push(user.id);
+    if (user.id != currentUserId) membersIdList.push(user.id);
   });
-
-  membersIdList.push(currentUserId);
 
   const [updateSubreddit] = useMutation(UPDATE_SUBREDDIT);
 
@@ -24,7 +22,7 @@ export const JoinSubreddit = ({ subredditId, users, currentUserId }) => {
           });
         }}
         type="submit">
-        join subreddit
+        leave subreddit
       </button>
     </div>
   );

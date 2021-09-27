@@ -1,15 +1,28 @@
 import { gql, useMutation } from '@apollo/client';
 
-export const CreateSubreddit = () => {
+export const CreateSubreddit = ({ session }) => {
   let name;
   let description;
+  const [createSubreddit] = useMutation(CREATE_SUBREDDIT);
 
   return (
     <div>
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          createSubreddit({
+            variables: {
+              name: name.value,
+              description: description.value,
+              admins: session.id,
+              users: session.id,
+            },
+          });
+        }}>
         <div>
           <input
             required
+            placeholder="subreddit title"
             ref={(node) => {
               name = node;
             }}
@@ -18,17 +31,49 @@ export const CreateSubreddit = () => {
         <div>
           <input
             required
+            placeholder="description"
             ref={(node) => {
               description = node;
             }}
           />
         </div>
-        <div>
+        {/* <div>
           <label>Choose an icon: </label>
           <input required type="file" accept=".jpeg, .png" />
-        </div>
-        <button type="submit">Add Subreddit</button>
+        </div> */}
+        <button type="submit">create subreddit</button>
       </form>
     </div>
   );
 };
+
+const CREATE_SUBREDDIT = gql`
+  mutation CreateSubreddit(
+    $name: String!
+    $description: String!
+    $admins: [ID]!
+    $users: [ID]!
+  ) {
+    createSubreddit(
+      input: {
+        data: {
+          name: $name
+          description: $description
+          admins: $admins
+          users: $users
+        }
+      }
+    ) {
+      subreddit {
+        name
+        description
+        users {
+          id
+        }
+        admins {
+          id
+        }
+      }
+    }
+  }
+`;

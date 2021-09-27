@@ -18,7 +18,7 @@ const Index = ({}) => {
     <>
       <div>
         <Navbar session={session} />
-        {/* <CreateSubreddit /> */}
+        {session && <CreateSubreddit session={session} />}
         <div>
           <h1>Reddit</h1>
           {posts.map((post) => (
