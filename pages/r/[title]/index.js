@@ -45,11 +45,20 @@ const SubredditPage = () => {
   return (
     <div>
       <div>
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}${subreddit.icon.url}`}
-          height={60}
-          widht={60}
-        />
+        {subreddit.icon ? (
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_URL}${subreddit.icon.url}`}
+            height={80}
+            widht={80}
+          />
+        ) : (
+          <img
+            src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/defaulticon_0934e73c86.png`}
+            height={80}
+            widht={80}
+          />
+        )}
+
         <h1>{subreddit.name}</h1>
         <h3>{subreddit.description}</h3>
         <div>

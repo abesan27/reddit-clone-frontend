@@ -15,20 +15,6 @@ const Index = ({}) => {
 
   const { posts } = data;
 
-  // const hasUserLikedPost = ({ post }) => {
-  //   let liked = false;
-  //   let id;
-
-  //   for (let i = 0; i < post.likes.length; i++) {
-  //     if (session && session.user.name == post.likes[i].users.username) {
-  //       liked = true;
-  //       id = post.likes[i].id;
-  //     }
-  //   }
-
-  //   return [liked, id];
-  // };
-
   return (
     <>
       <div>

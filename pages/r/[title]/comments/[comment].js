@@ -24,31 +24,6 @@ const Comment = () => {
   const post = data.posts[0];
   if (!post) return <div>No such post found.</div>;
 
-  // const hasUserLikedPost = ({ post }) => {
-  //   let liked = false;
-  //   let id;
-
-  //   for (let i = 0; i < post.likes.length; i++) {
-  //     if (session && session.user.name == post.likes[i].users.username) {
-  //       liked = true;
-  //       id = post.likes[i].id;
-  //     }
-  //   }
-
-  //   return [liked, id];
-  // };
-
-  // const hasLikedPost =
-  //   post.likes[0] &&
-  //   session &&
-  //   session.user.name == post.likes[0].users.username;
-
-  // console.log(
-  //   post.likes[0] &&
-  //     session &&
-  //     session.user.name == post.likes[0].users.username
-  // );
-
   return (
     <div>
       <Post
