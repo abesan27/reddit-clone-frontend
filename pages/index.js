@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
 import { CreateSubreddit } from '../components/posts/createSubreddit';
+import { useHasLikedPost } from '../utils/useHasLikedPost';
 
 const Index = ({}) => {
   const [session, loading] = useSession();
@@ -14,19 +15,19 @@ const Index = ({}) => {
 
   const { posts } = data;
 
-  const hasUserLikedPost = ({ post }) => {
-    let liked = false;
-    let id;
+  // const hasUserLikedPost = ({ post }) => {
+  //   let liked = false;
+  //   let id;
 
-    for (let i = 0; i < post.likes.length; i++) {
-      if (session && session.user.name == post.likes[i].users.username) {
-        liked = true;
-        id = post.likes[i].id;
-      }
-    }
+  //   for (let i = 0; i < post.likes.length; i++) {
+  //     if (session && session.user.name == post.likes[i].users.username) {
+  //       liked = true;
+  //       id = post.likes[i].id;
+  //     }
+  //   }
 
-    return [liked, id];
-  };
+  //   return [liked, id];
+  // };
 
   return (
     <>
@@ -39,7 +40,7 @@ const Index = ({}) => {
             <Post
               key={post.id}
               post={post}
-              hasLikedPost={hasUserLikedPost({ post })}
+              hasLikedPost={useHasLikedPost({ post, session })}
             />
           ))}
         </div>

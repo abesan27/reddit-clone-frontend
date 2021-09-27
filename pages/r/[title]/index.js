@@ -6,6 +6,7 @@ import { Post } from '../../../components/posts/post';
 import { JoinSubreddit } from '../../../components/shared/joinSubreddit';
 import { LeaveSubreddit } from '../../../components/shared/leaveSubreddit';
 import { useRouter } from 'next/router';
+import { useHasLikedPost } from '../../../utils/useHasLikedPost';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -80,11 +81,7 @@ const SubredditPage = () => {
           key={post.id}
           post={post}
           subreddit={title}
-          hasLikedPost={
-            post.likes[0] &&
-            session &&
-            session.user.name == post.likes[0].users.username
-          }
+          hasLikedPost={useHasLikedPost({ post, session })}
         />
       ))}
     </div>

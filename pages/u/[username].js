@@ -1,15 +1,23 @@
 import { gql, useQuery } from '@apollo/client';
 import { useGetUsername } from '../../utils/useGetUsername';
 import { Post } from '../../components/posts/post';
+import { useHasLikedPost } from '../../utils/useHasLikedPost';
+import { useSession } from 'next-auth/client';
 
 const UserPage = () => {
+  const [session, loading] = useSession();
+
   const username = useGetUsername();
 
-  const { loading, error, data } = useQuery(USER_QUERY, {
+  const {
+    loading: loadingQuery,
+    error,
+    data,
+  } = useQuery(USER_QUERY, {
     variables: { username: username },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading || loadingQuery) return <div>Loading...</div>;
   if (error) return <div>Error</div>;
 
   if (!data.users[0]) return <div>No such user found.</div>;
@@ -23,7 +31,11 @@ const UserPage = () => {
         <h1>{user.username}</h1>
       </div>
       {posts.map((post) => (
-        <Post key={post.id} post={post} />
+        <Post
+          key={post.id}
+          post={post}
+          hasLikedPost={useHasLikedPost({ post, session })}
+        />
       ))}
     </div>
   );
@@ -38,7 +50,12 @@ const USER_QUERY = gql`
         id
         title
         description
-        votes
+        likes {
+          id
+          users {
+            username
+          }
+        }
         subreddit {
           name
         }
