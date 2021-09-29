@@ -1,72 +1,99 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useState } from 'react';
+import { LinkForm } from './forms/linkForm';
+import { TextForm } from './forms/textForm';
 
-export const CreatePost = ({ userId }) => {
-  let title;
-  let description;
-  const [addPost] = useMutation(ADD_POST);
+export const CreatePost = ({ session }) => {
+  const [createPost] = useMutation(CREATE_POST);
+  const [postType, setPostType] = useState('text');
+  const [selected, setSelected] = useState(1);
+
+  const {
+    loading,
+    error,
+    data: queryData,
+  } = useQuery(USER_QUERY, {
+    variables: { username: session.user.name },
+  });
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+
+  const subredditsList = queryData.users[0].subreddits;
 
   return (
     <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          addPost({
-            variables: {
-              title: title.value,
-              description: description.value,
-              user: userId,
-              subreddit: 1,
-            },
-          });
-          title.value = '';
-          description.value = '';
-        }}>
-        <div>
-          <input disabled type="radio" id="text" name="type" />
-          <label for="text">text</label>
-        </div>
-        <div>
-          <input disabled required type="radio" id="image/video" name="type" />
-          <label for="image/video">image/video</label>
-        </div>
-        <div>
-          <input disabled required type="radio" id="link" name="type" />
-          <label for="link">link</label>
-        </div>
-        <div>
-          <select disabled name="subreddits">
-            <option value="programming">programming</option>
-            <option value="askreddit">askreddit</option>
-          </select>
-        </div>
-        <div>
-          <input
-            required
-            placeholder="title"
-            required
-            ref={(node) => {
-              title = node;
-            }}
-          />
-          <input
-            required
-            placeholder="description"
-            required
-            ref={(node) => {
-              description = node;
-            }}
-          />
-        </div>
-        <button type="submit">create post</button>
-      </form>
+      <div>
+        <input
+          type="radio"
+          id="text"
+          name="type"
+          defaultChecked
+          onChange={() => {
+            setPostType('text');
+          }}
+        />
+        <label for="text">text</label>
+      </div>
+      <div>
+        <input
+          required
+          type="radio"
+          id="link"
+          name="type"
+          onChange={() => {
+            setPostType('link');
+          }}
+        />
+        <label for="link">link</label>
+      </div>
+
+      <div>
+        <select
+          onChange={(e) => {
+            setSelected(e.target.value);
+          }}>
+          {subredditsList.map((subreddit) => (
+            <option key={subreddit.id} value={subreddit.id}>
+              r/{subreddit.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {postType === 'text' ? (
+        <TextForm
+          mutation={createPost}
+          userId={session.id}
+          selectedSubreddit={selected}
+        />
+      ) : (
+        <LinkForm
+          mutation={createPost}
+          userId={session.id}
+          selectedSubreddit={selected}
+        />
+      )}
     </div>
   );
 };
 
-const ADD_POST = gql`
+const USER_QUERY = gql`
+  query Users($username: String) {
+    users(where: { username: $username }) {
+      subreddits {
+        name
+        id
+      }
+    }
+  }
+`;
+
+const CREATE_POST = gql`
   mutation CreatePost(
     $title: String!
-    $description: String!
+    $text: String
+    $url: String
     $user: ID!
     $subreddit: ID!
   ) {
@@ -74,7 +101,8 @@ const ADD_POST = gql`
       input: {
         data: {
           title: $title
-          description: $description
+          text: $text
+          url: $url
           user: $user
           subreddit: $subreddit
         }
@@ -82,7 +110,8 @@ const ADD_POST = gql`
     ) {
       post {
         title
-        description
+        text
+        url
         user {
           id
         }

@@ -50,7 +50,8 @@ const COMMENT_QUERY = gql`
     posts(where: { id: $id }) {
       id
       title
-      description
+      text
+      url
       user {
         username
         id

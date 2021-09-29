@@ -116,7 +116,8 @@ const SUBREDDIT_QUERY = gql`
           id
         }
         title
-        description
+        text
+        url
         id
         likes {
           id
