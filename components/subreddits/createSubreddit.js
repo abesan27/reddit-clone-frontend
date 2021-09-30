@@ -37,10 +37,6 @@ export const CreateSubreddit = ({ session }) => {
             }}
           />
         </div>
-        {/* <div>
-          <label>Choose an icon: </label>
-          <input required type="file" accept=".jpeg, .png" />
-        </div> */}
         <button type="submit">create subreddit</button>
       </form>
     </div>

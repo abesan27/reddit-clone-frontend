@@ -59,13 +59,4 @@ const POSTS_QUERY = gql`
   }
 `;
 
-// export const getServerSideProps = async ({ req }) => {
-//   const session = await getSession({ req });
-//   return {
-//     props: {
-//       session,
-//     },
-//   };
-// };
-
 export default Index;
