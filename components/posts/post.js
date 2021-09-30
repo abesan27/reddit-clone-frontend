@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Comment } from './comment';
+import { Comment } from '../comments/comment';
 import { useSession } from 'next-auth/client';
 import { LikePost } from './likePost';
 
