@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { signIn, useSession } from 'next-auth/client';
 import { useGetComment } from '../../../../utils/useGetComment';
 import { Post } from '../../../../components/posts/post';
-import { CreateComment } from '../../../../components/posts/createComment';
+import { CreateComment } from '../../../../components/comments/createComment';
 import { useHasLikedPost } from '../../../../utils/useHasLikedPost';
 
 const Comment = () => {

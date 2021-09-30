@@ -6,8 +6,6 @@ export const LinkForm = ({ mutation, userId, selectedSubreddit, disabled }) => {
   let title;
   let url;
 
-  console.log(selectedSubreddit, disabled);
-
   return (
     <div>
       <form

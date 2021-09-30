@@ -1,13 +1,10 @@
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 export const TextForm = ({ mutation, userId, selectedSubreddit, disabled }) => {
   const router = useRouter();
 
   let title;
   let text;
-
-  console.log(selectedSubreddit, disabled);
 
   return (
     <div>

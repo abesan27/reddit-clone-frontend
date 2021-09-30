@@ -3,8 +3,8 @@ import { useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
 import { useCheckUsername } from '../../../utils/useCheckUsername';
 import { Post } from '../../../components/posts/post';
-import { JoinSubreddit } from '../../../components/shared/joinSubreddit';
-import { LeaveSubreddit } from '../../../components/shared/leaveSubreddit';
+import { JoinSubreddit } from '../../../components/subreddits/joinSubreddit';
+import { LeaveSubreddit } from '../../../components/subreddits/leaveSubreddit';
 import { useRouter } from 'next/router';
 import { useHasLikedPost } from '../../../utils/useHasLikedPost';
 

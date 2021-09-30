@@ -10,16 +10,12 @@ export const CreatePost = ({ session }) => {
   const [selected, setSelected] = useState(undefined);
   const [disabled, setDisabled] = useState(true);
 
-  const {
-    loading,
-    error: queryError,
-    data,
-  } = useQuery(USER_QUERY, {
+  const { loading, error, data } = useQuery(USER_QUERY, {
     variables: { username: session.user.name },
   });
 
   if (loading) return <div>Loading...</div>;
-  if (queryError) return <div>Error</div>;
+  if (error) return <div>Error</div>;
 
   const subredditsList = data.users[0].subreddits;
 

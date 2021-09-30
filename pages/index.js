@@ -2,7 +2,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useSession } from 'next-auth/client';
 import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
-import { CreateSubreddit } from '../components/posts/createSubreddit';
+import { CreateSubreddit } from '../components/subreddits/createSubreddit';
 import { useHasLikedPost } from '../utils/useHasLikedPost';
 
 const Index = ({}) => {
@@ -58,14 +58,5 @@ const POSTS_QUERY = gql`
     }
   }
 `;
-
-// export const getServerSideProps = async ({ req }) => {
-//   const session = await getSession({ req });
-//   return {
-//     props: {
-//       session,
-//     },
-//   };
-// };
 
 export default Index;
