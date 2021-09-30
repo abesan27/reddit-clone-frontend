@@ -14,7 +14,7 @@ const Submit = () => {
 
   return (
     <div>
-      <CreatePost userId={session.id} />
+      <CreatePost session={session} />
     </div>
   );
 };

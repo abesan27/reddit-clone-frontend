@@ -62,7 +62,8 @@ const USER_QUERY = gql`
       posts {
         id
         title
-        description
+        text
+        url
         likes {
           id
           users {

@@ -40,7 +40,8 @@ const POSTS_QUERY = gql`
     posts {
       id
       title
-      description
+      text
+      url
       user {
         username
         id
