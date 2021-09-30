@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
 
-export const LinkForm = ({ mutation, userId, selectedSubreddit }) => {
+export const LinkForm = ({ mutation, userId, selectedSubreddit, disabled }) => {
   const router = useRouter();
 
   let title;
   let url;
+
+  console.log(selectedSubreddit, disabled);
 
   return (
     <div>
@@ -38,7 +40,9 @@ export const LinkForm = ({ mutation, userId, selectedSubreddit }) => {
             }}
           />
         </div>
-        <button type="submit">create post</button>
+        <button disabled={disabled} type="submit">
+          create post
+        </button>
       </form>
     </div>
   );

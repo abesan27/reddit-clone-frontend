@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 
-export const TextForm = ({ mutation, userId, selectedSubreddit }) => {
+export const TextForm = ({ mutation, userId, selectedSubreddit, disabled }) => {
   const router = useRouter();
 
   let title;
   let text;
+
+  console.log(selectedSubreddit, disabled);
 
   return (
     <div>
@@ -38,7 +41,9 @@ export const TextForm = ({ mutation, userId, selectedSubreddit }) => {
             }}
           />
         </div>
-        <button type="submit">create post</button>
+        <button disabled={disabled} type="submit">
+          create post
+        </button>
       </form>
     </div>
   );

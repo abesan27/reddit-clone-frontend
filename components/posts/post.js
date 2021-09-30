@@ -24,7 +24,13 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
         <a>{post.title}</a>
       </Link>
       <div>
-        {post.text ? <p>{post.text}</p> : <a href={post.url}>{post.url}</a>}
+        {post.text ? (
+          <p>{post.text}</p>
+        ) : (
+          <Link href={post.url}>
+            <a>{post.url}</a>
+          </Link>
+        )}
         {post.user && post.subreddit ? (
           <p>
             posted by{' '}
