@@ -4,6 +4,7 @@ import { useGetComment } from '../../../../utils/useGetComment';
 import { Post } from '../../../../components/posts/post';
 import { CreateComment } from '../../../../components/comments/createComment';
 import { useHasLikedPost } from '../../../../utils/useHasLikedPost';
+import { Navbar } from '../../../../components/shared/navbar';
 
 const Comment = () => {
   const comment = parseInt(useGetComment());
@@ -26,16 +27,12 @@ const Comment = () => {
 
   return (
     <div>
+      <Navbar session={session} />
       <Post
         key={post.id}
         post={post}
         hasLikedPost={useHasLikedPost({ post, session })}
       />
-      {!session && (
-        <div>
-          <button onClick={() => signIn()}>Sign in</button>
-        </div>
-      )}
       {session && (
         <div>
           <CreateComment postId={post.id} userId={session.id} />

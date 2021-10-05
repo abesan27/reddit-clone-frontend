@@ -7,6 +7,7 @@ import { JoinSubreddit } from '../../../components/subreddits/joinSubreddit';
 import { LeaveSubreddit } from '../../../components/subreddits/leaveSubreddit';
 import { useRouter } from 'next/router';
 import { useHasLikedPost } from '../../../utils/useHasLikedPost';
+import { Navbar } from '../../../components/shared/navbar';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -44,6 +45,7 @@ const SubredditPage = () => {
 
   return (
     <div>
+      <Navbar session={session} />
       <div>
         {subreddit.icon ? (
           <img

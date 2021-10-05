@@ -44,7 +44,7 @@ export const Navbar = ({ session }) => {
 
   return (
     <div>
-      <h1>Navbar</h1>
+      <h1>reddit</h1>
       {!session && (
         <div>
           {signOutButtonNode()}

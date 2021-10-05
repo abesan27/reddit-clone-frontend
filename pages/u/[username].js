@@ -3,6 +3,7 @@ import { useGetUsername } from '../../utils/useGetUsername';
 import { Post } from '../../components/posts/post';
 import { useHasLikedPost } from '../../utils/useHasLikedPost';
 import { useSession } from 'next-auth/client';
+import { Navbar } from '../../components/shared/navbar';
 
 const UserPage = () => {
   const [session, loading] = useSession();
@@ -27,6 +28,7 @@ const UserPage = () => {
 
   return (
     <div>
+      <Navbar session={session} />
       {user.pfp ? (
         <img
           src={`${process.env.NEXT_PUBLIC_API_URL}${user.pfp.url}`}
