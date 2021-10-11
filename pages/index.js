@@ -16,7 +16,7 @@ const Index = ({}) => {
   const { posts } = data;
   let postList = [];
 
-  if (!loading && session) {
+  if (!loadingQuery && session) {
     for (let i = 0; i < data.users[0].subreddits.length; i++) {
       for (let j = 0; j < data.users[0].subreddits[i].posts.length; j++) {
         postList.push(data.users[0].subreddits[i].posts[j]);
