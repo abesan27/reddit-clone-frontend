@@ -8,6 +8,7 @@ import { LeaveSubreddit } from '../../../components/subreddits/leaveSubreddit';
 import { useRouter } from 'next/router';
 import { useHasLikedPost } from '../../../utils/useHasLikedPost';
 import { Navbar } from '../../../components/shared/navbar';
+import { useRandomizePosts } from '../../../utils/useRandomizePosts';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -42,6 +43,9 @@ const SubredditPage = () => {
     isMember = checkIfMember;
     isAdmin = checkIfAdmin;
   }
+
+  let postList = [...posts];
+  const randomizedPostList = RandomizePosts({ postList });
 
   return (
     <div>
@@ -87,7 +91,7 @@ const SubredditPage = () => {
           <button onClick={() => router.push('/submit')}>create post</button>
         </div>
       )}
-      {posts.map((post) => (
+      {randomizedPostList.map((post) => (
         <Post
           key={post.id}
           post={post}
@@ -97,6 +101,10 @@ const SubredditPage = () => {
       ))}
     </div>
   );
+};
+
+const RandomizePosts = ({ postList }) => {
+  return useRandomizePosts({ postList });
 };
 
 const SUBREDDIT_QUERY = gql`

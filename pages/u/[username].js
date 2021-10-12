@@ -4,6 +4,7 @@ import { Post } from '../../components/posts/post';
 import { useHasLikedPost } from '../../utils/useHasLikedPost';
 import { useSession } from 'next-auth/client';
 import { Navbar } from '../../components/shared/navbar';
+import { useRandomizePosts } from '../../utils/useRandomizePosts';
 
 const UserPage = () => {
   const [session, loading] = useSession();
@@ -26,6 +27,9 @@ const UserPage = () => {
   const user = data.users[0];
   const { posts } = user;
 
+  let postList = [...posts];
+  const randomizedPostList = RandomizePosts({ postList });
+
   return (
     <div>
       <Navbar session={session} />
@@ -45,7 +49,7 @@ const UserPage = () => {
       <div>
         <h1>{user.username}</h1>
       </div>
-      {posts.map((post) => (
+      {randomizedPostList.map((post) => (
         <Post
           key={post.id}
           post={post}
@@ -54,6 +58,10 @@ const UserPage = () => {
       ))}
     </div>
   );
+};
+
+const RandomizePosts = ({ postList }) => {
+  return useRandomizePosts({ postList });
 };
 
 const USER_QUERY = gql`
