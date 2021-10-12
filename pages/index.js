@@ -14,15 +14,8 @@ const Index = ({}) => {
   if (error) return <div>Error</div>;
 
   const { posts } = data;
-  let postList = [];
 
-  if (!loadingQuery && session) {
-    for (let i = 0; i < data.users[0].subreddits.length; i++) {
-      for (let j = 0; j < data.users[0].subreddits[i].posts.length; j++) {
-        postList.push(data.users[0].subreddits[i].posts[j]);
-      }
-    }
-  }
+  const postList = GetPostsFromQuery({ loadingQuery, session, data });
 
   return (
     <>
@@ -67,6 +60,33 @@ const GetQuery = ({ session }) => {
   }
 
   return [loadingQuery, error, data];
+};
+
+const GetPostsFromQuery = ({ loadingQuery, session, data }) => {
+  let postList = [];
+
+  if (!loadingQuery && session) {
+    for (let i = 0; i < data.users[0].subreddits.length; i++) {
+      for (let j = 0; j < data.users[0].subreddits[i].posts.length; j++) {
+        postList.push(data.users[0].subreddits[i].posts[j]);
+      }
+    }
+
+    let currentIndex = postList.length,
+      randomIndex;
+
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [postList[currentIndex], postList[randomIndex]] = [
+        postList[randomIndex],
+        postList[currentIndex],
+      ];
+    }
+  }
+
+  return postList;
 };
 
 const DEFAULT_POSTS_QUERY = gql`
