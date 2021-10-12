@@ -4,6 +4,7 @@ import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
 import { CreateSubreddit } from '../components/subreddits/createSubreddit';
 import { useHasLikedPost } from '../utils/useHasLikedPost';
+import { useRandomizePosts } from '../utils/useRandomizePosts';
 
 const Index = ({}) => {
   const [session, loading] = useSession();
@@ -15,7 +16,13 @@ const Index = ({}) => {
 
   const { posts } = data;
 
-  const postList = GetPostsFromQuery({ loadingQuery, session, data });
+  const randomizedAuthPostList = GetPostsFromQuery({
+    loadingQuery,
+    session,
+    data,
+  });
+
+  const randomizedPostList = RandomizePosts({ session, posts });
 
   return (
     <>
@@ -24,14 +31,14 @@ const Index = ({}) => {
         {session && <CreateSubreddit session={session} />}
         <div>
           {session
-            ? postList.map((post) => (
+            ? randomizedAuthPostList.map((post) => (
                 <Post
                   key={post.id}
                   post={post}
                   hasLikedPost={useHasLikedPost({ post, session })}
                 />
               ))
-            : posts.map((post) => (
+            : randomizedPostList.map((post) => (
                 <Post
                   key={post.id}
                   post={post}
@@ -71,22 +78,16 @@ const GetPostsFromQuery = ({ loadingQuery, session, data }) => {
         postList.push(data.users[0].subreddits[i].posts[j]);
       }
     }
-
-    let currentIndex = postList.length,
-      randomIndex;
-
-    while (currentIndex != 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [postList[currentIndex], postList[randomIndex]] = [
-        postList[randomIndex],
-        postList[currentIndex],
-      ];
-    }
   }
 
-  return postList;
+  return useRandomizePosts({ postList });
+};
+
+const RandomizePosts = ({ session, posts }) => {
+  if (!session) {
+    let postList = [...posts];
+    return useRandomizePosts({ postList });
+  }
 };
 
 const DEFAULT_POSTS_QUERY = gql`
