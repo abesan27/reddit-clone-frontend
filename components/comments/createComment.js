@@ -11,6 +11,7 @@ export const CreateComment = ({ postId, userId }) => {
           e.preventDefault();
           addComment({
             variables: { content: content.value, post: postId, user: userId },
+            refetchQueries: [{ query: COMMENT_QUERY }],
           });
           content.value = '';
         }}>
@@ -25,6 +26,37 @@ export const CreateComment = ({ postId, userId }) => {
     </div>
   );
 };
+
+const COMMENT_QUERY = gql`
+  query {
+    posts {
+      id
+      title
+      text
+      url
+      user {
+        username
+        id
+      }
+      likes {
+        id
+        users {
+          username
+        }
+      }
+      subreddit {
+        name
+      }
+      comments {
+        id
+        content
+        user {
+          username
+        }
+      }
+    }
+  }
+`;
 
 const ADD_COMMENT = gql`
   mutation CreateComment($content: String!, $post: ID!, $user: ID!) {

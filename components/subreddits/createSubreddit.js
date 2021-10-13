@@ -1,4 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
+import router from 'next/router';
 
 export const CreateSubreddit = ({ session }) => {
   let name;
@@ -17,7 +18,10 @@ export const CreateSubreddit = ({ session }) => {
               admins: session.id,
               users: session.id,
             },
+            refetchQueries: [{ query: SUBREDDIT_QUERY }],
           });
+
+          router.push(`r/${name.value}`);
         }}>
         <div>
           <input
@@ -42,6 +46,42 @@ export const CreateSubreddit = ({ session }) => {
     </div>
   );
 };
+
+const SUBREDDIT_QUERY = gql`
+  query {
+    subreddits {
+      id
+      name
+      description
+      admins {
+        username
+      }
+      users {
+        id
+        username
+      }
+      posts {
+        user {
+          username
+          id
+        }
+        title
+        text
+        url
+        id
+        likes {
+          id
+          users {
+            username
+          }
+        }
+      }
+      icon {
+        url
+      }
+    }
+  }
+`;
 
 const CREATE_SUBREDDIT = gql`
   mutation CreateSubreddit(
