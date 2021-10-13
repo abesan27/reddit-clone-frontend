@@ -1,7 +1,10 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { REFETCH_POST } from '../../queries/refetch/refetchPost';
+import { CREATE_LIKE } from '../../queries/create/createLike';
+import { DELETE_LIKE } from '../../queries/delete/deleteLike';
 
 export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
-  const [addLike] = useMutation(ADD_LIKE);
+  const [addLike] = useMutation(CREATE_LIKE);
   const [deleteLike] = useMutation(DELETE_LIKE);
 
   return (
@@ -15,7 +18,7 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
               users: currentUserId,
               post: post.id,
             },
-            refetchQueries: [{ query: POSTS_QUERY }],
+            refetchQueries: [{ query: REFETCH_POST }],
           });
         }}>
         <button disabled={liked} type="submit">
@@ -29,7 +32,7 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
             variables: {
               id: likedPostId,
             },
-            refetchQueries: [{ query: POSTS_QUERY }],
+            refetchQueries: [{ query: REFETCH_POST }],
           });
         }}>
         <button disabled={!liked} type="submit">
@@ -39,54 +42,3 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
     </div>
   );
 };
-
-const POSTS_QUERY = gql`
-  query {
-    posts {
-      id
-      title
-      text
-      url
-      user {
-        username
-        id
-      }
-      subreddit {
-        name
-      }
-      likes {
-        id
-        users {
-          username
-        }
-      }
-    }
-  }
-`;
-
-const ADD_LIKE = gql`
-  mutation CreateLike($liked_id: String!, $users: ID!, $post: ID!) {
-    createLike(
-      input: { data: { liked_id: $liked_id, users: $users, post: $post } }
-    ) {
-      like {
-        users {
-          username
-        }
-        post {
-          id
-        }
-      }
-    }
-  }
-`;
-
-const DELETE_LIKE = gql`
-  mutation DeleteLike($id: ID!) {
-    deleteLike(input: { where: { id: $id } }) {
-      like {
-        id
-      }
-    }
-  }
-`;

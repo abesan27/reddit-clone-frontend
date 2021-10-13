@@ -1,10 +1,11 @@
-import { gql, useQuery } from '@apollo/client';
-import { signIn, useSession } from 'next-auth/client';
+import { useQuery } from '@apollo/client';
+import { useSession } from 'next-auth/client';
 import { useGetComment } from '../../../../utils/useGetComment';
 import { Post } from '../../../../components/posts/post';
 import { CreateComment } from '../../../../components/comments/createComment';
 import { useHasLikedPost } from '../../../../utils/useHasLikedPost';
 import { Navbar } from '../../../../components/shared/navbar';
+import { QUERY_COMMENTS } from '../../../../queries/query/queryComments';
 
 const Comment = () => {
   const comment = parseInt(useGetComment());
@@ -15,7 +16,7 @@ const Comment = () => {
     loading: loadingQuery,
     error,
     data,
-  } = useQuery(COMMENT_QUERY, {
+  } = useQuery(QUERY_COMMENTS, {
     variables: { id: comment },
   });
 
@@ -41,36 +42,5 @@ const Comment = () => {
     </div>
   );
 };
-
-const COMMENT_QUERY = gql`
-  query Posts($id: ID) {
-    posts(where: { id: $id }) {
-      id
-      title
-      text
-      url
-      user {
-        username
-        id
-      }
-      likes {
-        id
-        users {
-          username
-        }
-      }
-      subreddit {
-        name
-      }
-      comments {
-        id
-        content
-        user {
-          username
-        }
-      }
-    }
-  }
-`;
 
 export default Comment;
