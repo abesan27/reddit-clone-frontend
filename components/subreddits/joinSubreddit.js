@@ -1,4 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { REFETCH_SUBREDDIT } from '../../queries/refetch/refetchSubreddit';
+import { UPDATE_SUBREDDIT } from '../../queries/update/updateSubreddit';
 
 export const JoinSubreddit = ({ subredditId, users, currentUserId }) => {
   let membersIdList = [];
@@ -21,7 +23,7 @@ export const JoinSubreddit = ({ subredditId, users, currentUserId }) => {
               subreddit: subredditId,
               username: membersIdList,
             },
-            refetchQueries: [{ query: SUBREDDIT_QUERY }],
+            refetchQueries: [{ query: REFETCH_SUBREDDIT }],
           });
         }}
         type="submit">
@@ -30,53 +32,3 @@ export const JoinSubreddit = ({ subredditId, users, currentUserId }) => {
     </div>
   );
 };
-
-const SUBREDDIT_QUERY = gql`
-  query {
-    subreddits {
-      id
-      name
-      description
-      admins {
-        username
-      }
-      users {
-        id
-        username
-      }
-      posts {
-        user {
-          username
-          id
-        }
-        title
-        text
-        url
-        id
-        likes {
-          id
-          users {
-            username
-          }
-        }
-      }
-      icon {
-        url
-      }
-    }
-  }
-`;
-
-const UPDATE_SUBREDDIT = gql`
-  mutation updateSubreddit($subreddit: ID!, $username: [ID]!) {
-    updateSubreddit(
-      input: { where: { id: $subreddit }, data: { users: $username } }
-    ) {
-      subreddit {
-        users {
-          username
-        }
-      }
-    }
-  }
-`;

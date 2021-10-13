@@ -1,7 +1,9 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { LinkForm } from './forms/linkForm';
 import { TextForm } from './forms/textForm';
+import { QUERY_USER_SUBREDDIT } from '../../queries/query/queryUserSubreddit';
+import { CREATE_POST } from '../../queries/create/createPost';
 
 export const CreatePost = ({ session }) => {
   const [createPost] = useMutation(CREATE_POST);
@@ -10,7 +12,7 @@ export const CreatePost = ({ session }) => {
   const [selected, setSelected] = useState(undefined);
   const [disabled, setDisabled] = useState(true);
 
-  const { loading, error, data, refetch } = useQuery(USER_QUERY, {
+  const { loading, error, data, refetch } = useQuery(QUERY_USER_SUBREDDIT, {
     variables: { username: session.user.name },
   });
 
@@ -84,48 +86,3 @@ export const CreatePost = ({ session }) => {
     </div>
   );
 };
-
-const USER_QUERY = gql`
-  query Users($username: String) {
-    users(where: { username: $username }) {
-      subreddits {
-        name
-        id
-      }
-    }
-  }
-`;
-
-const CREATE_POST = gql`
-  mutation CreatePost(
-    $title: String!
-    $text: String
-    $url: String
-    $user: ID!
-    $subreddit: ID!
-  ) {
-    createPost(
-      input: {
-        data: {
-          title: $title
-          text: $text
-          url: $url
-          user: $user
-          subreddit: $subreddit
-        }
-      }
-    ) {
-      post {
-        title
-        text
-        url
-        user {
-          id
-        }
-        subreddit {
-          id
-        }
-      }
-    }
-  }
-`;

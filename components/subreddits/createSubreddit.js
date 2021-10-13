@@ -1,4 +1,6 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { REFETCH_SUBREDDIT } from '../../queries/refetch/refetchSubreddit';
+import { CREATE_SUBREDDIT } from '../../queries/create/createSubreddit';
 import router from 'next/router';
 
 export const CreateSubreddit = ({ session }) => {
@@ -18,7 +20,7 @@ export const CreateSubreddit = ({ session }) => {
               admins: session.id,
               users: session.id,
             },
-            refetchQueries: [{ query: SUBREDDIT_QUERY }],
+            refetchQueries: [{ query: REFETCH_SUBREDDIT }],
           });
 
           router.push(`r/${name.value}`);
@@ -46,70 +48,3 @@ export const CreateSubreddit = ({ session }) => {
     </div>
   );
 };
-
-const SUBREDDIT_QUERY = gql`
-  query {
-    subreddits {
-      id
-      name
-      description
-      admins {
-        username
-      }
-      users {
-        id
-        username
-      }
-      posts {
-        user {
-          username
-          id
-        }
-        title
-        text
-        url
-        id
-        likes {
-          id
-          users {
-            username
-          }
-        }
-      }
-      icon {
-        url
-      }
-    }
-  }
-`;
-
-const CREATE_SUBREDDIT = gql`
-  mutation CreateSubreddit(
-    $name: String!
-    $description: String!
-    $admins: [ID]!
-    $users: [ID]!
-  ) {
-    createSubreddit(
-      input: {
-        data: {
-          name: $name
-          description: $description
-          admins: $admins
-          users: $users
-        }
-      }
-    ) {
-      subreddit {
-        name
-        description
-        users {
-          id
-        }
-        admins {
-          id
-        }
-      }
-    }
-  }
-`;

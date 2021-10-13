@@ -1,10 +1,12 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useSession } from 'next-auth/client';
 import { Post } from '../components/posts/post';
 import { Navbar } from '../components/shared/navbar';
 import { CreateSubreddit } from '../components/subreddits/createSubreddit';
 import { useHasLikedPost } from '../utils/useHasLikedPost';
 import { useRandomizePosts } from '../utils/useRandomizePosts';
+import { QUERY_DEFAULT_POSTS } from '../queries/query/queryDefaultPosts';
+import { QUERY_AUTH_POSTS } from '../queries/query/queryAuthPosts';
 
 const Index = ({}) => {
   const [session, loading] = useSession();
@@ -59,11 +61,11 @@ const GetQuery = ({ session }) => {
       loading: loadingQuery,
       error,
       data,
-    } = useQuery(AUTHENTICATED_POSTS_QUERY, {
+    } = useQuery(QUERY_AUTH_POSTS, {
       variables: { username: session.user.name },
     }));
   } else {
-    ({ loading: loadingQuery, error, data } = useQuery(DEFAULT_POSTS_QUERY));
+    ({ loading: loadingQuery, error, data } = useQuery(QUERY_DEFAULT_POSTS));
   }
 
   return [loadingQuery, error, data];
@@ -89,59 +91,5 @@ const RandomizePosts = ({ session, posts }) => {
     return useRandomizePosts({ postList });
   }
 };
-
-const DEFAULT_POSTS_QUERY = gql`
-  query {
-    posts {
-      id
-      title
-      text
-      url
-      user {
-        username
-        id
-      }
-      subreddit {
-        name
-      }
-      likes {
-        id
-        users {
-          username
-        }
-      }
-    }
-  }
-`;
-
-const AUTHENTICATED_POSTS_QUERY = gql`
-  query Accounts($username: String) {
-    users(where: { username: $username }) {
-      username
-      id
-      subreddits {
-        posts {
-          id
-          title
-          text
-          url
-          user {
-            username
-            id
-          }
-          subreddit {
-            name
-          }
-          likes {
-            id
-            users {
-              username
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 export default Index;

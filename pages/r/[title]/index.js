@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useSession } from 'next-auth/client';
 import { useGetTitle } from '../../../utils/useGetTitle';
 import { useCheckUsername } from '../../../utils/useCheckUsername';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { useHasLikedPost } from '../../../utils/useHasLikedPost';
 import { Navbar } from '../../../components/shared/navbar';
 import { useRandomizePosts } from '../../../utils/useRandomizePosts';
+import { QUERY_SUBREDDIT } from '../../../queries/query/querySubreddit';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -22,7 +23,7 @@ const SubredditPage = () => {
     loading: subredditLoading,
     error: subredditError,
     data: subredditData,
-  } = useQuery(SUBREDDIT_QUERY, {
+  } = useQuery(QUERY_SUBREDDIT, {
     variables: { name: title },
   });
 
@@ -106,41 +107,5 @@ const SubredditPage = () => {
 const RandomizePosts = ({ postList }) => {
   return useRandomizePosts({ postList });
 };
-
-const SUBREDDIT_QUERY = gql`
-  query Subreddits($name: String!) {
-    subreddits(where: { name: $name }) {
-      id
-      name
-      description
-      admins {
-        username
-      }
-      users {
-        id
-        username
-      }
-      posts {
-        user {
-          username
-          id
-        }
-        title
-        text
-        url
-        id
-        likes {
-          id
-          users {
-            username
-          }
-        }
-      }
-      icon {
-        url
-      }
-    }
-  }
-`;
 
 export default SubredditPage;

@@ -1,10 +1,11 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useGetUsername } from '../../utils/useGetUsername';
 import { Post } from '../../components/posts/post';
 import { useHasLikedPost } from '../../utils/useHasLikedPost';
 import { useSession } from 'next-auth/client';
 import { Navbar } from '../../components/shared/navbar';
 import { useRandomizePosts } from '../../utils/useRandomizePosts';
+import { QUERY_USER_POSTS } from '../../queries/query/queryUserPosts';
 
 const UserPage = () => {
   const [session, loading] = useSession();
@@ -15,7 +16,7 @@ const UserPage = () => {
     loading: loadingQuery,
     error,
     data,
-  } = useQuery(USER_QUERY, {
+  } = useQuery(QUERY_USER_POSTS, {
     variables: { username: username },
   });
 
@@ -63,32 +64,5 @@ const UserPage = () => {
 const RandomizePosts = ({ postList }) => {
   return useRandomizePosts({ postList });
 };
-
-const USER_QUERY = gql`
-  query Accounts($username: String) {
-    users(where: { username: $username }) {
-      username
-      id
-      posts {
-        id
-        title
-        text
-        url
-        likes {
-          id
-          users {
-            username
-          }
-        }
-        subreddit {
-          name
-        }
-      }
-      pfp {
-        url
-      }
-    }
-  }
-`;
 
 export default UserPage;
