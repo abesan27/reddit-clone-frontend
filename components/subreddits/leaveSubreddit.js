@@ -19,6 +19,7 @@ export const LeaveSubreddit = ({ subredditId, users, currentUserId }) => {
               subreddit: subredditId,
               username: membersIdList,
             },
+            refetchQueries: [{ query: SUBREDDIT_QUERY }],
           });
         }}
         type="submit">
@@ -27,6 +28,42 @@ export const LeaveSubreddit = ({ subredditId, users, currentUserId }) => {
     </div>
   );
 };
+
+const SUBREDDIT_QUERY = gql`
+  query {
+    subreddits {
+      id
+      name
+      description
+      admins {
+        username
+      }
+      users {
+        id
+        username
+      }
+      posts {
+        user {
+          username
+          id
+        }
+        title
+        text
+        url
+        id
+        likes {
+          id
+          users {
+            username
+          }
+        }
+      }
+      icon {
+        url
+      }
+    }
+  }
+`;
 
 const UPDATE_SUBREDDIT = gql`
   mutation updateSubreddit($subreddit: ID!, $username: [ID]!) {

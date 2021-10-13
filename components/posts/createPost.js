@@ -10,7 +10,7 @@ export const CreatePost = ({ session }) => {
   const [selected, setSelected] = useState(undefined);
   const [disabled, setDisabled] = useState(true);
 
-  const { loading, error, data } = useQuery(USER_QUERY, {
+  const { loading, error, data, refetch } = useQuery(USER_QUERY, {
     variables: { username: session.user.name },
   });
 
@@ -55,6 +55,7 @@ export const CreatePost = ({ session }) => {
           onChange={(e) => {
             setSelected(e.target.value);
             setDisabled(false);
+            refetch();
           }}>
           <option disabled={!disabled}>select a community</option>
           {subredditsList.map((subreddit) => (

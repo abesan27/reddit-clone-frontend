@@ -15,6 +15,7 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
               users: currentUserId,
               post: post.id,
             },
+            refetchQueries: [{ query: POSTS_QUERY }],
           });
         }}>
         <button disabled={liked} type="submit">
@@ -28,6 +29,7 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
             variables: {
               id: likedPostId,
             },
+            refetchQueries: [{ query: POSTS_QUERY }],
           });
         }}>
         <button disabled={!liked} type="submit">
@@ -37,6 +39,30 @@ export const LikePost = ({ post, liked, likedPostId, currentUserId }) => {
     </div>
   );
 };
+
+const POSTS_QUERY = gql`
+  query {
+    posts {
+      id
+      title
+      text
+      url
+      user {
+        username
+        id
+      }
+      subreddit {
+        name
+      }
+      likes {
+        id
+        users {
+          username
+        }
+      }
+    }
+  }
+`;
 
 const ADD_LIKE = gql`
   mutation CreateLike($liked_id: String!, $users: ID!, $post: ID!) {
