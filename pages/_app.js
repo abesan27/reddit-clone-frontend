@@ -2,6 +2,8 @@ import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../utils/apolloClient';
 import { Provider } from 'next-auth/client';
 
+import 'tailwindcss/tailwind.css';
+
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
