@@ -7,6 +7,9 @@ import { useHasLikedPost } from '../utils/useHasLikedPost';
 import { useRandomizePosts } from '../utils/useRandomizePosts';
 import { QUERY_DEFAULT_POSTS } from '../queries/query/queryDefaultPosts';
 import { QUERY_AUTH_POSTS } from '../queries/query/queryAuthPosts';
+import { SortBar } from '../components/shared/sortBar';
+import { Footer } from '../components/shared/footer';
+import { TopCommunities } from '../components/shared/topCommunities';
 
 const Index = ({}) => {
   const [session, loading] = useSession();
@@ -31,22 +34,31 @@ const Index = ({}) => {
       <div>
         <Navbar session={session} />
         {session && <CreateSubreddit session={session} />}
-        <div>
-          {session
-            ? randomizedAuthPostList.map((post) => (
-                <Post
-                  key={post.id}
-                  post={post}
-                  hasLikedPost={useHasLikedPost({ post, session })}
-                />
-              ))
-            : randomizedPostList.map((post) => (
-                <Post
-                  key={post.id}
-                  post={post}
-                  hasLikedPost={useHasLikedPost({ post, session })}
-                />
-              ))}
+        <div className="bg-gray-800 h-full">
+          <div className="grid grid-cols-3 py-20 mx-auto gap-4 w-3/6">
+            <div className="col-span-2">
+              <SortBar />
+              {session
+                ? randomizedAuthPostList.map((post) => (
+                    <Post
+                      key={post.id}
+                      post={post}
+                      hasLikedPost={useHasLikedPost({ post, session })}
+                    />
+                  ))
+                : randomizedPostList.map((post) => (
+                    <Post
+                      key={post.id}
+                      post={post}
+                      hasLikedPost={useHasLikedPost({ post, session })}
+                    />
+                  ))}
+            </div>
+            <div>
+              <TopCommunities />
+              <Footer />
+            </div>
+          </div>
         </div>
       </div>
     </>

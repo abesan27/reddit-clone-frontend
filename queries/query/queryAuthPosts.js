@@ -17,6 +17,9 @@ export const QUERY_AUTH_POSTS = gql`
           }
           subreddit {
             name
+            icon {
+              url
+            }
           }
           likes {
             id

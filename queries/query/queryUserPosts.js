@@ -18,6 +18,9 @@ export const QUERY_USER_POSTS = gql`
         }
         subreddit {
           name
+          icon {
+            url
+          }
         }
       }
       pfp {

@@ -18,6 +18,11 @@ export const QUERY_SUBREDDIT = gql`
           username
           id
         }
+        subreddit {
+          icon {
+            url
+          }
+        }
         title
         text
         url

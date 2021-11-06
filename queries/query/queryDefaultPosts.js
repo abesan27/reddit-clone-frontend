@@ -13,6 +13,9 @@ export const QUERY_DEFAULT_POSTS = gql`
       }
       subreddit {
         name
+        icon {
+          url
+        }
       }
       likes {
         id

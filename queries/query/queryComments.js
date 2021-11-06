@@ -19,6 +19,9 @@ export const QUERY_COMMENTS = gql`
       }
       subreddit {
         name
+        icon {
+          url
+        }
       }
       comments {
         id
