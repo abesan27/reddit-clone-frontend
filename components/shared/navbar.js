@@ -10,13 +10,14 @@ export const Navbar = ({ session }) => {
     return (
       <div>
         <Link href="/api/auth/signin">
-          <button
+          <a
             onClick={(e) => {
               e.preventDefault();
               signIn();
-            }}>
-            Sign In
-          </button>
+            }}
+            className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-300 hover:to-pink-400 rounded-full text-lg font-semibold p-1.5 px-6">
+            Signin
+          </a>
         </Link>
       </div>
     );
@@ -30,34 +31,29 @@ export const Navbar = ({ session }) => {
     return (
       <div>
         <Link href="/api/auth/signout">
-          <button
+          <a
             onClick={(e) => {
               e.preventDefault();
               signOut();
-            }}>
-            Sign Out
-          </button>
+            }}
+            className="border-2 border-gray-200 hover:bg-gray-700 rounded-full text-gray-200 text-lg p-1 px-6">
+            Signout
+          </a>
         </Link>
       </div>
     );
   };
 
   return (
-    <div>
-      <h1>reddit</h1>
-      {!session && (
-        <div>
-          {signOutButtonNode()}
-          {signInButtonNode()}
+    <nav className="bg-gray-900 h-14 mx-auto px-20 shadow-2xl">
+      <div className="flex justify-between">
+        <Link href="/">
+          <a className="mt-3.5 font-semibold text-lg text-gray-200">Reddit</a>
+        </Link>
+        <div className="mt-3.5 space-x-5">
+          {!session ? <>{signInButtonNode()}</> : <>{signOutButtonNode()}</>}
         </div>
-      )}
-      {session && (
-        <div>
-          {signOutButtonNode()}
-          {signInButtonNode()}
-          <p>Logged in as: {session.user.name}</p>
-        </div>
-      )}
-    </div>
+      </div>
+    </nav>
   );
 };
