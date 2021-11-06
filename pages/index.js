@@ -9,7 +9,7 @@ import { QUERY_DEFAULT_POSTS } from '../queries/query/queryDefaultPosts';
 import { QUERY_AUTH_POSTS } from '../queries/query/queryAuthPosts';
 import { SortBar } from '../components/shared/sortBar';
 import { Footer } from '../components/shared/footer';
-import { TopCommunities } from '../components/shared/topCommunities';
+import { Newest } from '../components/subreddits/newest';
 
 const Index = ({}) => {
   const [session, loading] = useSession();
@@ -55,7 +55,7 @@ const Index = ({}) => {
                   ))}
             </div>
             <div>
-              <TopCommunities />
+              <Newest />
               <Footer />
             </div>
           </div>

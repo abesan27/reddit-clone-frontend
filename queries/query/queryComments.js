@@ -19,6 +19,13 @@ export const QUERY_COMMENTS = gql`
       }
       subreddit {
         name
+        description
+        users {
+          id
+        }
+        posts {
+          id
+        }
         icon {
           url
         }

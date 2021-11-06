@@ -6,6 +6,9 @@ import { useSession } from 'next-auth/client';
 import { Navbar } from '../../components/shared/navbar';
 import { useRandomizePosts } from '../../utils/useRandomizePosts';
 import { QUERY_USER_POSTS } from '../../queries/query/queryUserPosts';
+import { SortBar } from '../../components/shared/sortBar';
+import { Footer } from '../../components/shared/footer';
+import { UserInfo } from '../../components/shared/userInfo';
 
 const UserPage = () => {
   const [session, loading] = useSession();
@@ -34,29 +37,24 @@ const UserPage = () => {
   return (
     <div>
       <Navbar session={session} />
-      {user.pfp ? (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}${user.pfp.url}`}
-          height={80}
-          widht={80}
-        />
-      ) : (
-        <img
-          src={`${process.env.NEXT_PUBLIC_API_URL}/uploads/snoo_783cb16771.png`}
-          height={80}
-          widht={80}
-        />
-      )}
-      <div>
-        <h1>{user.username}</h1>
+      <div className="bg-gray-800 h-full">
+        <div className="grid grid-cols-3 py-20 mx-auto gap-4 w-3/6">
+          <div className="col-span-2">
+            <SortBar />
+            {randomizedPostList.map((post) => (
+              <Post
+                key={post.id}
+                post={post}
+                hasLikedPost={useHasLikedPost({ post, session })}
+              />
+            ))}
+          </div>
+          <div>
+            <UserInfo user={user} />
+            <Footer />
+          </div>
+        </div>
       </div>
-      {randomizedPostList.map((post) => (
-        <Post
-          key={post.id}
-          post={post}
-          hasLikedPost={useHasLikedPost({ post, session })}
-        />
-      ))}
     </div>
   );
 };

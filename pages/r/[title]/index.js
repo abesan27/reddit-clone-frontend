@@ -10,6 +10,10 @@ import { useHasLikedPost } from '../../../utils/useHasLikedPost';
 import { Navbar } from '../../../components/shared/navbar';
 import { useRandomizePosts } from '../../../utils/useRandomizePosts';
 import { QUERY_SUBREDDIT } from '../../../queries/query/querySubreddit';
+import { SortBar } from '../../../components/shared/sortBar';
+import { Header } from '../../../components/subreddits/header';
+import { Footer } from '../../../components/shared/footer';
+import { About } from '../../../components/subreddits/about';
 
 const SubredditPage = () => {
   const title = useGetTitle();
@@ -50,7 +54,7 @@ const SubredditPage = () => {
 
   return (
     <div>
-      <Navbar session={session} />
+      {/* <Navbar session={session} />
       <div>
         {subreddit.icon ? (
           <img
@@ -91,15 +95,27 @@ const SubredditPage = () => {
           <p>Logged in as: {session.user.name}</p>
           <button onClick={() => router.push('/submit')}>create post</button>
         </div>
-      )}
-      {randomizedPostList.map((post) => (
-        <Post
-          key={post.id}
-          post={post}
-          subreddit={title}
-          hasLikedPost={useHasLikedPost({ post, session })}
-        />
-      ))}
+      )} */}
+      <Header subreddit={subreddit} />
+      <div className="bg-gray-800 h-full">
+        <div className="grid grid-cols-3 py-20 mx-auto gap-4 w-3/6">
+          <div className="col-span-2">
+            <SortBar />
+            {randomizedPostList.map((post) => (
+              <Post
+                key={post.id}
+                post={post}
+                subreddit={title}
+                hasLikedPost={useHasLikedPost({ post, session })}
+              />
+            ))}
+          </div>
+          <div>
+            <About subreddit={subreddit} />
+            <Footer />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

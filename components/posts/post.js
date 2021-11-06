@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/client';
 import { LikePost, VoteButtons } from './voteButtons';
 import { ExternalLinkIcon } from '@heroicons/react/solid';
 import { ViewComments } from './viewComments';
+import { CreateComment } from '../comments/createComment';
 
 export const Post = ({ post, subreddit, hasLikedPost }) => {
   const [session, loading] = useSession();
@@ -21,7 +22,7 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
   const [liked, id] = hasLikedPost;
 
   return (
-    <div className="bg-gray-900 p-3 mb-4 rounded-lg shadow-2xl">
+    <div className="bg-gray-900  p-3 mb-4 rounded-lg shadow-2xl">
       <div className="grid grid-cols-2">
         <div className="flex justify-start">
           {post.subreddit.icon ? (
@@ -58,31 +59,33 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
             )}
           </div>
         </div>
-        <div className="flex justify-end">
+        {/* <div className="flex justify-end">
           <Link href="#">
             <a className="bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-300 hover:to-pink-400 rounded-full mt-1 py-0.5 px-2 pl-1.5 h-7 text-black font-medium">
               + Join
             </a>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       <div className="pt-3">
         <Link href={`/r/${subredditName}/comments/${post.id}`}>
-          <a className="overflow-hidden text-gray-200 font-semibold hover:underline">
+          <a className="overflow-hidden truncate text-gray-200 font-semibold hover:underline">
             {post.title}
           </a>
         </Link>
 
         {post.text ? (
-          <p className="text-gray-300 pt-1">{post.text}</p>
+          <p className="break-words text-gray-300 pt-1">{post.text}</p>
         ) : (
           <div>
             <Link href={post.url}>
-              <a className="text-blue-300 hover:underline flex pt-1">
-                {post.url}{' '}
-                <ExternalLinkIcon className="pl-0.5 h-5 w-5 mr-1.5 mt-0.5" />
-              </a>
+              <div>
+                <a className="truncate text-blue-300 hover:underline flex pt-1">
+                  {post.url}{' '}
+                  <ExternalLinkIcon className="pl-0.5 h-5 w-5 mr-1.5 mt-0.5" />
+                </a>
+              </div>
             </Link>
           </div>
         )}
@@ -98,13 +101,19 @@ export const Post = ({ post, subreddit, hasLikedPost }) => {
             currentUserId={session.id}
           />
         )}
-
         <ViewComments subredditName={subredditName} postId={post.id} />
-
-        {/* <CommentsButton /> */}
-        {post.comments &&
-          post.comments.map((comment) => <Comment comment={comment} />)}
       </div>
+
+      {post.comments && session && (
+        <CreateComment
+          postId={post.id}
+          userId={session.id}
+          username={post.user.username}
+        />
+      )}
+
+      {post.comments &&
+        post.comments.map((comment) => <Comment comment={comment} />)}
     </div>
   );
 };

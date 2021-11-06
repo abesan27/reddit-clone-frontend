@@ -6,6 +6,8 @@ import { CreateComment } from '../../../../components/comments/createComment';
 import { useHasLikedPost } from '../../../../utils/useHasLikedPost';
 import { Navbar } from '../../../../components/shared/navbar';
 import { QUERY_COMMENTS } from '../../../../queries/query/queryComments';
+import { Footer } from '../../../../components/shared/footer';
+import { About } from '../../../../components/subreddits/about';
 
 const Comment = () => {
   const comment = parseInt(useGetComment());
@@ -29,16 +31,21 @@ const Comment = () => {
   return (
     <div>
       <Navbar session={session} />
-      <Post
-        key={post.id}
-        post={post}
-        hasLikedPost={useHasLikedPost({ post, session })}
-      />
-      {session && (
-        <div>
-          <CreateComment postId={post.id} userId={session.id} />
+      <div className="bg-gray-800 h-screen">
+        <div className="grid grid-cols-3 py-20 mx-auto gap-4 w-3/6">
+          <div className="col-span-2">
+            <Post
+              key={post.id}
+              post={post}
+              hasLikedPost={useHasLikedPost({ post, session })}
+            />
+          </div>
+          <div>
+            <About subreddit={data.posts[0].subreddit} />
+            <Footer />
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
